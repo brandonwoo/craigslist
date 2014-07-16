@@ -9,7 +9,7 @@ module Craigslist
       search_type: :A,
       min_ask: nil,
       max_ask: nil,
-      has_image: false
+      has_image: false,
       country: ""
     }
 
