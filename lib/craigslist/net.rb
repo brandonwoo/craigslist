@@ -15,8 +15,13 @@ module Craigslist
       #
       # @param city_path [String]
       # @return [String]
-      def build_city_uri(city_path)
-        "http://#{city_path}.craigslist.org"
+      def build_city_uri(country, city_path)
+        case country
+        when "canada"
+          "http://#{city_path}.craigslist.ca"
+        else
+          "http://#{city_path}.craigslist.org"
+        end
       end
 
       # Returns a Craigslist uri given city path, category path, options
@@ -27,14 +32,14 @@ module Craigslist
       # @param options [Hash]
       # @param offset [Integer]
       # @return [String]
-      def build_uri(city_path, category_path, options, offset=nil)
+      def build_uri(country, city_path, category_path, options, offset=nil)
 
         # Vary url if any of the search options are not set
         if options[:query].nil? && options[:min_ask].nil? &&
            options[:max_ask].nil? && options[:has_image] == 0
 
           # Use the non-search uri
-          uri = "#{build_city_uri(city_path)}/#{category_path}/"
+          uri = "#{build_city_uri(country, city_path)}/#{category_path}/"
 
           if offset && offset > 0
             uri = uri + "index#{offset}.html"
@@ -60,7 +65,7 @@ module Craigslist
 
           query_string = build_query(params)
 
-          uri = "#{build_city_uri(city_path)}/search/#{category_path}?" + query_string
+          uri = "#{build_city_uri(country, city_path)}/search/#{category_path}?" + query_string
         end
       end
 

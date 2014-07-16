@@ -10,6 +10,7 @@ module Craigslist
       min_ask: nil,
       max_ask: nil,
       has_image: false
+      country: ""
     }
 
     def initialize(*args, &block)
@@ -42,11 +43,11 @@ module Craigslist
         has_image: @has_image
       }
 
-      uri = Craigslist::Net::build_uri(@city, @category_path, options)
+      uri = Craigslist::Net::build_uri(@country, @city, @category_path, options)
       results = []
 
       for i in 0..(([max_results - 1, -1].max) / 100)
-        uri = Craigslist::Net::build_uri(@city, @category_path, options, i * 100) if i > 0
+        uri = Craigslist::Net::build_uri(@country, @city, @category_path, options, i * 100) if i > 0
         doc = Nokogiri::HTML(open(uri))
 
         doc.css('p.row').each do |node|
